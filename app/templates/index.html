@@ -1,10 +1,17 @@
-<html>
-    <head>
-        <title>{{ title }} - Microblog</title> <!-- P14 -->
-    </head>
-<body>
+{% extends "base.html" %} <!-- P.18. `extends` and the template name in quotes. -->
 
+{% block content %}
     <h1>Hello, {{ user.username }}!</h1>
 
-</body>
-</html>
+    Here is the result of the blog
+    <h2>
+        {% for post in posts %}
+            <h3>
+                Auteur: {{ post.author.username }}
+            <h3>
+            <pre>
+                {{ post.body}}
+            </pre>
+        {% endfor %}
+    </h2>
+{% endblock content %}
