@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Sign in</h1>
+    <form action="" method="post" novalidate> <!-- the `action` is the URL is used when submitted, now this is empty so it is the same page. The `method` is the method to send it (post or get). You also make sure the method is added in the render_template as an argument. -->
+        {{ form.hidden_tag() }} <!-- Deze is voor de SeaSurf. Deze maakt een hidden-HTML field:         <input id="csrf_token" name="csrf_token" type="hidden" value="ImRmZTllMDdjNzQ2MGMwNWYzZTNjMmU1YjgwMjk1ODA2MDFiODljZGIi.YEotNg.nakiFkuEPl_ikgaMqSELyHNympQ"> -->
+        {{ form.username.label }} <br>
+        {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %} <!-- This is also WTF -->
+                <span style="color:red">{{ error }}</span>
+            {% endfor %} 
+        </p>
+        <p>
+            {{ form.password.label }} <br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %} <!-- This is also WTF -->
+                <span style="color:red">{{ error }}</span>
+            {% endfor %} 
+        </p>
+        <p>
+            {{ form.remember_me.label }}<br>
+            {{ form.remember_me() }}
+        </p>
+        <p>
+            {{ form.submit }}
+            {{ form.submit.label }}
+        </p>
+    </form>
+{% endblock content %}
