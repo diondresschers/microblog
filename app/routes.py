@@ -1,6 +1,7 @@
 from flask import render_template
 from flask import flash             # P.28 for Flask messages. 
 from flask import redirect          # Redeirect when a form is succesfully entered, redirect to another page.
+from flask import url_for
 
 from app import app # The first `app`, is the `app`-directory. The second `app` is the `app` created in the `__init__.py`-file: `app = Flask(__name__)`.
 from app.forms import LoginForm # De `app`, is de `app`-directory, de `.forms` is de `forms.py`-file en de `LoginForm` is de Class in die file
@@ -28,5 +29,5 @@ def login():
     # Check if the form is submitted or not:
     if form2.validate_on_submit(): # This is a function from Witty-forms. If the Submit-button have been pushed, so when this is a POST in stead of a GET
         flash(f'Login requested for user {form2.username.data}, {form2.remember_me.data}') # P.29 The `data` is the data that came with the form that the user just added. When you call the flash() message this will be stored, but you also have to show them in the template!
-        return redirect('/index')
+        return redirect(url_for('index')) # The `url_for`, needs the function name, not the actual URL. # You need to import this function as well.
     return render_template('login.html', title='Sign In', form=form2)
