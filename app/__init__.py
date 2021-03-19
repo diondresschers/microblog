@@ -3,13 +3,15 @@ from config import Config   # P.23 _ The `config` is the config.py file and this
 from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate # This is for the Alembic extension, to track database changes.
 
+from flask_login import LoginManager
+
 app = Flask(__name__) # P.6 We create an instance. # With this, it can find out the location on disk, so it can locate other files and directories.
 app.config.from_object(Config)
 
 db = SQLAlchemy(app) # P.38 
 migrate = Migrate(app, db) # The Alembic database tracker, needs the app and the db as arguments.
-
-
+login = LoginManager(app)
+login.login_view = 'login' # P.57 This is the URL-for # This is telling where the login page is
 
 # app.config['SECRET_KEY'] = "DummyKey" # P.22 _ This can be done, or it can be get from the OS, in this case you can create a `config.py` file in the top level.
 

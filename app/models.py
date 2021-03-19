@@ -1,5 +1,14 @@
 from app import db
+from app import login # Deze zit in de `app\__init__.py` en deze hebben we zelf aangemaakt voor flask-login.
+
 from datetime import datetime # This is for a time stamp
+
+from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
+
+from flask_login import UserMixin
+
+
 
 # If you want to reflect the changes in the database scheme run `(vv) $ flask db init` # this will create a new `migrations`-folder
 # With `(v) $ flask db` you will see all the options for the `flask db`, so also the `flask db init`-command
@@ -8,10 +17,7 @@ from datetime import datetime # This is for a time stamp
 # SQLite users 'Snake Case" naming convention for databases, so the name `AddressAndPhone` will be used in the Model Class and the table name would be `address_and_phone`. If you want to change this you can add the attribute `__tablename__` to the model class.
 # Instead of `flask db migrate`, you can also give an addional comment by using `flask db migrate -m "added posts"`
 
-
-
-
-class User(db.Model):
+class User(UserMixin, db.Model): # P.54, this makes the User class compatible with flask_login.
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -20,6 +26,16 @@ class User(db.Model):
 
     def __repr__(self):
         return'<User {}>'.format(self.username) # return f.'User {self.username}>' # Using an f-string in stead of # return 'return'<User {}>'.format(self.username)"
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@login.user_loader # P.54 Dit is de decorator for flask_login.
+def load_user(id): # Flask weet niks van de database, dus gebruikt alleen maar een user id. 
+    return User.query.get(int(id))
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
